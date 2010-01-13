@@ -21,3 +21,6 @@
 
 set[:ruby_enterprise][:install_path]  = "/usr/local"
 set[:ruby_enterprise][:ruby_bin]      = "/usr/local/bin/ruby"
+
+set[:ruby][:install_path] = set[:ruby_enterprise][:install_path]
+set[:ruby][:ruby_bin]     = set[:ruby_enterprise][:ruby_bin]
