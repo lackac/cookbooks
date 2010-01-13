@@ -10,6 +10,6 @@ recipe            "git::server", "Sets up a runit_service for git daemon"
   supports os
 end
 
-%w{ apache2 runit }.each do |cb|
+%w{ runit }.each do |cb|
   depends cb
 end
