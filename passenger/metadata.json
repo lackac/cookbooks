@@ -1,0 +1,49 @@
+{
+  "maintainer_email": "lackac@icanscale.com",
+  "suggestions": {
+
+  },
+  "recipes": {
+    "passenger::nginx": "",
+    "passenger": ""
+  },
+  "conflicting": {
+
+  },
+  "license": "Apache 2.0",
+  "attributes": {
+
+  },
+  "providing": {
+    "passenger::nginx": [
+
+    ],
+    "passenger": [
+
+    ]
+  },
+  "long_description": "= DESCRIPTION:\n\nInstalls and configures Passenger with nginx\n\n= REQUIREMENTS:\n\n== Platform:\n\nTested on Ubuntu 9.10. May work on other platforms, esp Ubuntu/Debian.\n\n== Cookbooks:\n\n* ruby\n* nginx\n\n= ATTRIBUTES: \n\n* passenger[:version] - Specify the version of passenger to install.\n* passenger[:root_path] - The location of the passenger gem.\n\n= USAGE:\n\nFor example, to run a Rails application on passenger:\n\n  include_recipe \"rails\"\n  include_recipe \"passenger::nginx\"\n  \n  web_app \"myproj\" do\n    docroot \"/srv/myproj/public\"\n    server_name \"myproj.#{node[:domain]}\"\n    server_aliases [ \"myproj\", node[:hostname] ]\n    rails_env \"production\"\n  end\n\nA sample config template is provided, web_app.conf.erb. If this is suitable for your application, add 'cookbook \"passenger\"' to the define above to use that template. Otherwise, copy the template to the cookbook where you're using web_app, and modify as needed. The cookbook parameter is optional, if omitted it will search the cookbook where the define is used.\n\n= LICENSE and AUTHOR:\n\nAuthor:: L\u00e1szl\u00f3 B\u00e1csi (<lackac@icanscale.com>)\n\nCopyright:: 2010, L\u00e1szl\u00f3 B\u00e1csi\n\nLicensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.\n",
+  "dependencies": {
+    "nginx": [
+
+    ],
+    "ruby": [
+
+    ]
+  },
+  "replacing": {
+
+  },
+  "platforms": {
+    "ubuntu": [
+
+    ]
+  },
+  "description": "Installs and configures Passenger with nginx",
+  "name": "passenger",
+  "version": "0.1.0",
+  "maintainer": "L\u00e1szl\u00f3 B\u00e1csi",
+  "recommendations": {
+
+  }
+}
