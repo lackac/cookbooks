@@ -1,0 +1,6 @@
+production:
+  adapter: mysql
+  database: <%= @params[:db][:database] %>
+  username: <%= @params[:db][:user] %>
+  password: <%= @params[:db][:password] %>
+  host: <%= @params[:db][:server] || "localhost" %>

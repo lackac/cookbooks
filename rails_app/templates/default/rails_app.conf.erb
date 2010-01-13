@@ -1,0 +1,14 @@
+server {
+	server_name <%= @server_name %>;
+	access_log <%= @node[:nginx][:log_dir] %>/<%= @params[:name] %>.access.log main;
+	listen 80;
+	
+  location {
+    root <%= @root_dir %>;
+    passenger_enabled on;
+    
+    if (-f $document_root/system/maintenance.html) {
+      rewrite ^(.*)$ /system/maintenance.html break;
+    }
+  }
+}
