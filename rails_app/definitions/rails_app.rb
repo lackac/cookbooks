@@ -37,6 +37,7 @@ define :rails_app, :deploy => true do
 
   if params[:db][:type] == "mysql" and (params[:db][:server].blank? or params[:db][:server] == "localhost")
     database params[:db][:database] do
+      provider Chef::Provider::DatabaseMysql
       user params[:db][:user]
       password params[:db][:password]
     end
@@ -72,7 +73,7 @@ define :rails_app, :deploy => true do
     restart_command "touch tmp/restart.txt"
   end
 
-  template "#{node[:nginx][:conf_dir]}/sites-available/#{params[:name]}.conf" do
+  template "#{node[:nginx][:dir]}/sites-available/#{params[:name]}.conf" do
     source "rails_app.conf.erb"
     owner "root"
     group "root"
@@ -86,7 +87,7 @@ define :rails_app, :deploy => true do
       :server_aliases => server_aliases,
       :params => params
     )
-    if File.exists?("#{node[:nginx][:conf_dir]}/sites-enabled/#{params[:name]}.conf")
+    if File.exists?("#{node[:nginx][:dir]}/sites-enabled/#{params[:name]}.conf")
       notifies :reload, resources(:service => "nginx"), :delayed
     end
   end
