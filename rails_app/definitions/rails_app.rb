@@ -60,7 +60,7 @@ define :rails_app, :deploy => true do
     end
     repo params[:repo]
     branch params[:branch]
-    owner params[:user]
+    user params[:user]
     group params[:group]
     enable_submodules false
     migrate params[:migrate]
