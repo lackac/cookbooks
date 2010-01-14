@@ -11,7 +11,6 @@ define :rails_app, :deploy => true do
   when "mysql"
     include_recipe "mysql::client"
   end
-  include_recipe "rails"
   include_recipe "passenger::nginx"
 
   shared_dirs.each do |dir|
