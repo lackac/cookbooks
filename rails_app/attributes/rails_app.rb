@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: rails_app
-# Recipe:: default
+# Attributes:: rails_app
 #
 # Author:: László Bácsi (<lackac@icanscale.com>)
 #
@@ -19,23 +19,12 @@
 # limitations under the License.
 #
 
-r = gem_package "chef-deploy" do
-  action :nothing
-end
-
-r.run_action(:install)
-
-Gem.clear_paths
-require "chef-deploy"
-
-node[:rails_apps].each do |name, properties|
-  rails_app name do
-    properties.each do |k, v|
-      send(k, v)
-    end
-  end
-end
-
-nginx_site "000-default" do
-  enable false
-end
+set_unless[:rails_app][:revision]         = "HEAD"
+set_unless[:rails_app][:branch]           = "HEAD"
+set_unless[:rails_app][:environment]      = "production"
+set_unless[:rails_app][:user]             = "www-data"
+set_unless[:rails_app][:group]            = "www-data"
+set_unless[:rails_app][:migrate_command]  = "rake #{rails_app[:environment]} db:migrate"
+set_unless[:rails_app][:migrate]          = false
+set_unless[:rails_app][:action]           = "nothing"
+set_unless[:rails_app][:scm_provider]     = :git
