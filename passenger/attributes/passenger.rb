@@ -19,5 +19,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-set_unless[:passenger][:version]      = "2.2.8"
+set_unless[:passenger][:version]      = "2.2.9"
 set_unless[:passenger][:root_path]    = "/usr/local/lib/ruby/gems/1.8/gems/passenger-#{passenger[:version]}"
