@@ -1,0 +1,23 @@
+<% unless @server_aliases.blank? %>
+server {
+  listen 80;
+  server_name <%= @server_aliases %>;
+  rewrite ^/(.*) http://<%= @server_name %>/$1 permanent;
+}
+<% end %>
+
+server {
+  listen 80;
+  server_name <%= @server_name %>;
+
+  access_log <%= @node[:nginx][:log_dir] %>/<%= @params[:name] %>.access.log main;
+
+  location {
+    root <%= @root_dir %>;
+    passenger_enabled on;
+
+    if (-f $document_root/system/maintenance.html) {
+      rewrite ^(.*)$ /system/maintenance.html break;
+    }
+  }
+}
