@@ -1,0 +1,38 @@
+{
+  "maintainer_email": "lackac@icanscale.com",
+  "suggestions": {
+
+  },
+  "recipes": {
+
+  },
+  "conflicting": {
+
+  },
+  "license": "Apache 2.0",
+  "attributes": {
+
+  },
+  "providing": {
+
+  },
+  "long_description": "",
+  "dependencies": {
+
+  },
+  "replacing": {
+
+  },
+  "platforms": {
+    "ubuntu": [
+
+    ]
+  },
+  "description": "Provides a database resource for creating databases and granting access to them.",
+  "name": "database",
+  "version": "0.1.0",
+  "maintainer": "L\u00e1szl\u00f3 B\u00e1csi",
+  "recommendations": {
+
+  }
+}
