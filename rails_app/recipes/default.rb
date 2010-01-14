@@ -19,6 +19,13 @@
 # limitations under the License.
 #
 
+gem_package "rails" do
+  if node[:rails][:version]
+    version node[:rails][:version]
+  end
+  action :install
+end
+
 r = gem_package "chef-deploy" do
   action :nothing
 end
