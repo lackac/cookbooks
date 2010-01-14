@@ -1,0 +1,42 @@
+{
+  "maintainer_email": "lackac@icanscale.com",
+  "suggestions": {
+
+  },
+  "recipes": {
+    "ruby": ""
+  },
+  "conflicting": {
+
+  },
+  "license": "Apache 2.0",
+  "attributes": {
+
+  },
+  "providing": {
+    "ruby": [
+
+    ]
+  },
+  "long_description": "",
+  "dependencies": {
+    "ruby_enterprise": [
+
+    ]
+  },
+  "replacing": {
+
+  },
+  "platforms": {
+    "ubuntu": [
+
+    ]
+  },
+  "description": "Delegates ruby installation to the ruby_enterprise cookbook",
+  "name": "ruby",
+  "version": "0.1.0",
+  "maintainer": "L\u00e1szl\u00f3 B\u00e1csi",
+  "recommendations": {
+
+  }
+}
