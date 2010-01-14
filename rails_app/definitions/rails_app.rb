@@ -35,6 +35,13 @@ define :rails_app, :deploy => true do
     mode "0664"
   end
 
+  if params[:db][:type] == "mysql" and (params[:db][:server].blank? or params[:db][:server] == "localhost")
+    database params[:db][:database] do
+      user params[:db][:user]
+      password params[:db][:password]
+    end
+  end
+
   if params[:db][:type] =~ /sqlite/
     file "#{root_dir}/shared/sqlite/production.sqlite3" do
       owner params[:user]
