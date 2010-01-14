@@ -47,12 +47,12 @@ node[:active_groups].each do |group_name, config|
       end
     end
 
-    remote_file "/home/#{u}/.profile" do
-      source "users/#{u}/.profile"
-      mode 0750
-      owner u
-      group config[:groups].first.to_s
-    end
+    # remote_file "/home/#{u}/.profile" do
+    #   source "users/#{u}/.profile"
+    #   mode 0750
+    #   owner u
+    #   group config[:groups].first.to_s
+    # end
 
     directory "/home/#{u}/.ssh" do
       action :create
