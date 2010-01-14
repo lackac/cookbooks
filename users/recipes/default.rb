@@ -18,7 +18,7 @@ if node[:active_users]
       password config[:password]
       supports :manage_home => true
       action [:create, :manage]
-    end  
+    end
   end
 end
 
@@ -45,27 +45,27 @@ node[:active_groups].each do |group_name, config|
         append true
         action [:modify]
       end
-    end    
-    
+    end
+
     remote_file "/home/#{u}/.profile" do
       source "users/#{u}/.profile"
       mode 0750
       owner u
       group config[:groups].first.to_s
     end
-    
+
     directory "/home/#{u}/.ssh" do
       action :create
       owner u
       group config[:groups].first.to_s
       mode 0700
     end
-    
+
     add_keys u do
       conf config
     end
   end
-  
+
   # remove users who may have been added but are now restricted from this node's role
   # (node[:users] - users).each do |u|
   #   user u do
@@ -81,11 +81,4 @@ end
 
 group "ubuntu" do
   action :remove
-end
-
-directory "/u" do
-  action :create
-  owner "root"
-  group "admin"
-  mode 0775
 end
