@@ -19,10 +19,7 @@
 # limitations under the License.
 #
 
-gem_package "rails" do
-  if node[:rails][:version]
-    version node[:rails][:version]
-  end
+gem_package "bundler" do
   action :install
 end
 

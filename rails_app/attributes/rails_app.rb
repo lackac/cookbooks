@@ -19,10 +19,8 @@
 # limitations under the License.
 #
 
-set_unless[:rails][:version] = false
-
 set_unless[:rails_app][:revision]         = "HEAD"
-set_unless[:rails_app][:branch]           = "HEAD"
+set_unless[:rails_app][:branch]           = "master"
 set_unless[:rails_app][:environment]      = "production"
 set_unless[:rails_app][:user]             = "www-data"
 set_unless[:rails_app][:group]            = "www-data"
