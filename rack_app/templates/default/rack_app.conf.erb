@@ -13,7 +13,7 @@ server {
   access_log <%= @node[:nginx][:log_dir] %>/<%= @name %>.access.log main;
 
   location {
-    root <%= @root_dir %>;
+    root <%= @root_dir %>/current/public;
     passenger_enabled on;
 
     if (-f $document_root/system/maintenance.html) {
