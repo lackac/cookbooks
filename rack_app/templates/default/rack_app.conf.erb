@@ -10,9 +10,9 @@ server {
   listen 80;
   server_name <%= @server_name %>;
 
-  access_log <%= @node[:nginx][:log_dir] %>/<%= @name %>.access.log main;
+  access_log <%= @node[:nginx][:log_dir] %>/<%= @name %>.access.log;
 
-  location {
+  location / {
     root <%= @root_dir %>/current/public;
     passenger_enabled on;
 
