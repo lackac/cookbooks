@@ -1,0 +1,9 @@
+<%= @environment %>: &defaults
+  adapter: <%= @database[:type] %>
+  database: <%= @database[:database] %>
+  username: <%= @database[:user] %>
+  password: <%= @database[:password] %>
+  host: <%= @database[:host] || "localhost" %>
+
+development:
+  <<: *defaults
