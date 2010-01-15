@@ -7,7 +7,7 @@ action :create do
     execute "create user and grant privileges to the database" do
       host = new_resource.host || "localhost"
       password = " IDENTIFIED BY '#{new_resource.password}'" if new_resource.password
-      command %(mysql -e "GRANT ALL ON #{new_resource.name}.* '#{new_resource.user}'@'#{host}'#{password};")
+      command %(mysql -e "GRANT ALL ON #{new_resource.name}.* TO '#{new_resource.user}'@'#{host}'#{password};")
     end
   end
 end
