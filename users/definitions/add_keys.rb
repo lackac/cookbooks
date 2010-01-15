@@ -6,7 +6,7 @@ define :add_keys do
 
   if keys[name].delete("generate")
     execute "ssh-key for #{name}" do
-      command "ssh-keygen -q -f ~/.ssh/id_rsa -N ''"
+      command "ssh-keygen -q -f /home/#{name}/.ssh/id_rsa -N ''"
       creates "/home/#{name}/.ssh/id_rsa"
       user name
     end
