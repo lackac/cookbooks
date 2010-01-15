@@ -115,7 +115,7 @@ define :rack_app, default_params do
     variables :name => name, :root_dir => root_dir,
               :server_name => server_name, :server_aliases => server_aliases
     if File.exists?("#{node[:nginx][:dir]}/sites-enabled/#{name}.conf")
-      notifies :reload, resources(:service => "nginx"), :delayed
+      notifies :restart, resources(:service => "nginx"), :delayed
     end
   end
 
