@@ -79,6 +79,7 @@ define :rack_app, default_params do
       provider Chef::Provider::DatabaseMysql
       user db[:user]
       password db[:password]
+      action :create
     end
   end
 
