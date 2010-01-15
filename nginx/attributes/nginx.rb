@@ -28,7 +28,7 @@ set_unless[:nginx][:gzip_comp_level] = "2"
 set_unless[:nginx][:gzip_proxied] = "any"
 set_unless[:nginx][:gzip_types] = [
   "text/plain",
-  "text/html",
+  #"text/html", # html is set by default
   "text/css",
   "application/x-javascript",
   "text/xml",
