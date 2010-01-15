@@ -4,7 +4,7 @@ define :add_keys do
   keys = Mash.new
   keys[name] = node[:ssh_keys][name].to_a
 
-  if keys[name].delete(:generate)
+  if keys[name].delete("generate")
     execute "ssh-key for #{name}" do
       command "ssh-keygen -q -f ~/.ssh/id_rsa -N ''"
       creates "/home/#{name}/.ssh/id_rsa"
