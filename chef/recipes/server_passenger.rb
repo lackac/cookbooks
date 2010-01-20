@@ -22,19 +22,6 @@ include_recipe "couchdb"
 include_recipe "stompserver"
 include_recipe "passenger::nginx"
 
-group "chef" do
-  gid 8000
-end
-
-user "chef" do
-  comment "Chef user"
-  gid "chef"
-  uid 8000
-  home node[:chef][:path]
-  supports :manage_home => false
-  shell "/bin/bash"
-end
-
 include_recipe "chef::client"
 
 gem_package "chef-server" do
@@ -45,36 +32,52 @@ gem_package "chef-server-slice" do
   version node[:chef][:server_version]
 end
 
-runit_service "chef-indexer"
+if node[:chef][:run_as] == "root"
+  chef_user = "root"
+  chef_group = value_for_platform(
+    "openbsd" => { "default" => "wheel" },
+    "freebsd" => { "default" => "wheel" },
+    "default" => "root"
+  )
+else
+  chef_user = node[:chef][:run_as].split(":").first
+  chef_group = node[:chef][:run_as].split(":").last
+end
 
 template "/etc/chef/server.rb" do
   source "server_passenger.rb.erb"
-  owner "chef"
-  group "chef"
+  owner chef_user
+  group chef_group
   mode "644"
-  notifies :restart, resources(
-    :service => "chef-indexer"
-  ), :delayed
+  variables :server_log => (node[:chef][:server_log] == "STDOUT" ? node[:chef][:server_log] : %{"#{node[:chef][:server_log]}"})
 end
 
 directory "/var/log/chef" do
-  owner "chef"
-  group "chef"
+  owner chef_user
+  group chef_group
   mode "775"
 end
 
 %w{openid cache search_index openid/cstore}.each do |dir|
   directory "#{node[:chef][:path]}/#{dir}" do
-    owner "chef"
-    group "chef"
     mode "775"
     recursive true
   end
 end
 
+bash "chown_chef_dirs" do
+  user "root"
+  cwd node[:chef][:path]
+  code "chown -R #{chef_user}:#{chef_group} openid cache search_index"
+  not_if do
+    File.stat("#{node[:chef][:path]}/openid/cstore").uid == Etc.getpwname(chef_user).uid rescue nil
+  end
+end
+
+
 directory "/etc/chef/certificates" do
-  owner "chef"
-  group "chef"
+  owner chef_user
+  group chef_group
   mode 0700
   recursive true
 end
@@ -87,7 +90,14 @@ openssl genrsa 2048 > #{node[:chef][:server_fqdn]}.key
 openssl req -subj "#{node[:chef][:server_ssl_req]}" -new -x509 -nodes -sha1 -days 3650 -key #{node[:chef][:server_fqdn]}.key > #{node[:chef][:server_fqdn]}.crt
 cat #{node[:chef][:server_fqdn]}.key #{node[:chef][:server_fqdn]}.crt > #{node[:chef][:server_fqdn]}.pem
 EOH
-  not_if { File.exists?("/etc/chef/certificates/#{node[:chef][:server_fqdn]}.pem") }
+  not_if do
+    File.exists?("/etc/chef/certificates/#{node[:chef][:server_fqdn]}.pem")
+  end
+end
+
+file "#{node[:chef][:server_path]}/config.ru" do
+  owner chef_user
+  group chef_group
 end
 
 template "#{node[:nginx][:dir]}/sites-available/chef_server.conf" do
@@ -104,7 +114,13 @@ end
 
 nginx_site "chef_server.conf" do
   enable enable_setting
-  only_if { File.exists?("#{node[:nginx][:dir]}/sites-available/chef_server.conf") }
+  only_if do
+    File.exists?("#{node[:nginx][:dir]}/sites-available/chef_server.conf")
+  end
+end
+
+service "chef-indexer" do
+  action :nothing
 end
 
 http_request "compact chef couchDB" do

@@ -48,12 +48,16 @@ case chef[:init_style]
 when "runit"
   set_unless[:chef][:client_log]  = "STDOUT"
   set_unless[:chef][:indexer_log] = "STDOUT"
-  set_unless[:chef][:server_log]  = "STDOUT"
+  set_unless[:chef][:server_log]  = recipe?("chef::server_passenger") ? "#{chef[:log_dir]}/server.log" : "STDOUT"
 else
   set_unless[:chef][:client_log]  = "#{chef[:log_dir]}/client.log"
   set_unless[:chef][:indexer_log] = "#{chef[:log_dir]}/indexer.log"
   set_unless[:chef][:server_log]  = "#{chef[:log_dir]}/server.log"
 end
+
+set_unless[:chef][:run_as] = recipe?("chef::server_passenger") ? "chef" : "root"
+set_unless[:chef][:server_path] = "#{languages[:ruby][:gems_dir]}/gems/chef-server-#{chef[:server_version]}"
+set_unless[:chef][:server_hostname] = hostname
 
 set_unless[:chef][:server_fqdn]     = domain ? "chef.#{domain}" : "chef"
 set_unless[:chef][:server_token]    = validation_token
