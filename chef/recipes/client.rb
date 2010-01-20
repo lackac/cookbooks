@@ -27,16 +27,31 @@ else
   show_time  = "true"
 end
 
-if recipe?("chef::server_passenger")
-  chef_user = "chef"
-  chef_group = "chef"
-else
+if node[:chef][:run_as] == "root"
   chef_user = "root"
   chef_group = value_for_platform(
     "openbsd" => { "default" => "wheel" },
     "freebsd" => { "default" => "wheel" },
     "default" => "root"
   )
+else
+  chef_user = node[:chef][:run_as].split(":").first
+  chef_group = node[:chef][:run_as].split(":").last
+
+  group chef_group do
+    gid 8000
+    not_if { Etc.getgrnam(chef_group) rescue nil }
+  end
+
+  user chef_user do
+    comment "Chef user"
+    gid "chef"
+    uid 8000
+    home node[:chef][:path]
+    supports :manage_home => false
+    shell "/bin/bash"
+    not_if { Etc.getpwnam(chef_user) rescue nil }
+  end
 end
 
 ruby_block "reload_client_config" do
