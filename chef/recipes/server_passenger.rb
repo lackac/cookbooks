@@ -45,13 +45,15 @@ gem_package "chef-server-slice" do
   version node[:chef][:server_version]
 end
 
+runit_service "chef-indexer"
+
 template "/etc/chef/server.rb" do
   source "server_passenger.rb.erb"
   owner "chef"
   group "chef"
   mode "644"
   notifies :restart, resources(
-    :service => "chef-indexer",
+    :service => "chef-indexer"
   ), :delayed
 end
 
@@ -61,7 +63,7 @@ directory "/var/log/chef" do
   mode "775"
 end
 
-%w{ openid cache search_index openid/cstore }.each do |dir|
+%w{openid cache search_index openid/cstore}.each do |dir|
   directory "#{node[:chef][:path]}/#{dir}" do
     owner "chef"
     group "chef"
@@ -87,8 +89,6 @@ cat #{node[:chef][:server_fqdn]}.key #{node[:chef][:server_fqdn]}.crt > #{node[:
 EOH
   not_if { File.exists?("/etc/chef/certificates/#{node[:chef][:server_fqdn]}.pem") }
 end
-
-runit_service "chef-indexer"
 
 template "#{node[:nginx][:dir]}/sites-available/chef_server.conf" do
   source "chef_server_passenger.conf.erb"
