@@ -7,7 +7,7 @@ server {
   root <%= @node[:chef][:server_path] %>/public;
   access_log <%= @node[:nginx][:log_dir] %>/chef_server.access.log;
 
-<%- %w{ facebox images javascripts stylesheets web-app-theme}.each do |dir| -%>
+<%- %w{facebox images javascripts stylesheets web-app-theme}.each do |dir| -%>
   location /<%= dir %> {
     alias <%= @gems_path %>/gems/chef-server-slice-<%= @version %>/public/<%= dir %>;
   }
