@@ -5,13 +5,15 @@ description       "Installs and configures chef client and server"
 long_description  IO.read(File.join(File.dirname(__FILE__), 'README.rdoc'))
 version           "0.13"
 recipe            "chef::client", "Sets up a client to talk to a chef-server"
-recipe            "chef::server", "Configures a chef-server as a passenger application"
+recipe            "chef::server", "Configures a chef-server"
+recipe            "chef::server_proxy", "Configures a chef-server with a reverse proxy"
+recipe            "chef::server_passenger", "Configures a chef-server as a passenger application"
 
-%w{ runit packages couchdb stompserver apache2 passenger_apache2 }.each do |cb|
+%w{ runit packages couchdb stompserver apache2 passenger_apache2 nginx passenger rack_app }.each do |cb|
   depends cb
 end
 
-%w{ centos rhel ubuntu debian }.each do |os|
+%w{ ubuntu }.each do |os|
   supports os
 end
 
@@ -75,7 +77,7 @@ attribute "chef/server_fqdn",
   :description => "FQDN of the Chef server for Apache vhost and SSL certificate and clients",
   :default => "hostname.domain"
 
-attribute "chef/server_ssl_req", 
+attribute "chef/server_ssl_req",
   :display_name => "Chef Server SSL Request",
   :description => "Data to pass for creating the SSL certificate",
   :default => "/C=US/ST=Several/L=Locality/O=Example/OU=Operations/CN=chef_server_fqdn/emailAddress=ops@domain"
