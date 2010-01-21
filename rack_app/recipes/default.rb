@@ -27,7 +27,7 @@ end
 
 node[:rack_apps].each do |name, properties|
   rack_app name do
-    properties.each do |k, v|
+    (properties.nil? ? node[name] : properties).each do |k, v|
       send(k, v)
     end
   end
