@@ -1,0 +1,24 @@
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), "lib"))
+
+require "vendor/gems/environment"
+require "integrity"
+
+<%- @node[:integrity][:notifiers].each do |notifier| -%>
+require "integrity/notifier/<%= notifier %>"
+<%- end -%>
+
+Integrity.configure do |c|
+  c.database  "<%= @node[:integrity][:database_uri] %>"
+  c.directory "<%= @node[:integrity][:export_dir] %>"
+  c.base_url  "http://<%= @node[:integrity][:server_name] %>"
+  c.log       "<%= @node[:integrity][:log_file] %>"
+<%- if @node[:integrity][:basic_auth] and not @node[:integrity][:protect_all] -%>
+  c.user      "<%= @node[:integrity][:auth_user] %>"
+  c.pass      "<%= @node[:integrity][:auth_pass] %>"
+<%- end -%>
+  c.github    "<%= @node[:integrity][:github_token] %>"
+  c.builder   :threaded, 5
+<%- if @node[:integrity][:build_all] -%>
+  c.build_all!
+<%- end -%>
+end
