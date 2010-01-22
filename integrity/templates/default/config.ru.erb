@@ -1,8 +1,8 @@
 require 'init'
 
 <%- if @node[:integrity][:protect_all] -%>
-use Rack::Auth::Basic do |user, pass|
-  user == "<%= @node[:integrity][:auth_user] %>" and pass == "<%= @node[:integrity][:auth_pass] %>"
-end
+require 'excluding_auth'
+use ExcludingAuth, /^\/github\//, "<%= @node[:integrity][:auth_user] %>", "<%= @node[:integrity][:auth_pass] %>", "Integrity"
 <%- end -%>
+
 run Integrity::App
