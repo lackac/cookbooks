@@ -1,0 +1,43 @@
+{
+  "conflicting": {
+
+  },
+  "providing": {
+    "integrity": [
+
+    ]
+  },
+  "long_description": "",
+  "license": "Apache v2.0",
+  "attributes": {
+
+  },
+  "replacing": {
+
+  },
+  "dependencies": {
+    "nginx": [
+
+    ],
+    "passenger": [
+
+    ]
+  },
+  "maintainer": "L\u00e1szl\u00f3 B\u00e1csi",
+  "recommendations": {
+
+  },
+  "platforms": {
+
+  },
+  "description": "Configures integrity as an nginx passenger application",
+  "name": "integrity",
+  "version": "0.1.0",
+  "maintainer_email": "lackac@icanscale.com",
+  "recipes": {
+    "integrity": ""
+  },
+  "suggestions": {
+
+  }
+}

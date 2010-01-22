@@ -1,0 +1,18 @@
+<%- unless @node[:integrity][:server_aliases].blank? -%>
+server {
+  listen 80;
+  server_name <%= @node[:integrity][:server_aliases] %>;
+  rewrite ^/(.*) http://<%= @node[:integrity][:server_name] %>/$1 permanent;
+}
+<%- end -%>
+server {
+  listen 80;
+  server_name <%= @node[:integrity][:server_name] %>;
+
+  access_log <%= @node[:nginx][:log_dir] %>/integrity.access.log;
+
+  location / {
+    root <%= @node[:integrity][:path] %>/current/public;
+    passenger_enabled on;
+  }
+}
