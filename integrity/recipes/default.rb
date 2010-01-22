@@ -39,6 +39,7 @@ symlink_from_shared = { "log" => "log", "pids" => "tmp/pids" }
 
 if node[:integrity][:database_uri] =~ /^sqlite3:(.*)$/
   db_path = $1
+  include_recipe "sqlite"
   file "#{node[:integrity][:path]}/shared/#{db_path}" do
     owner node[:integrity][:user]
     group node[:integrity][:group]
