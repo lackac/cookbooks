@@ -60,7 +60,7 @@ deploy_branch node[:integrity][:path] do
 
   purge_before_symlink        %w{log tmp/pids}
   create_dirs_before_symlink  %w{tmp public}
-  symlink_before_migrate      "vendor" => "vendor"
+  symlink_before_migrate({})
   symlinks                    symlink_from_shared
 
   before_migrate do
@@ -88,6 +88,10 @@ deploy_branch node[:integrity][:path] do
           f.write(gemfile)
         end
       end
+    end
+
+    link "#{current_release}/vendor" do
+      to "#{node[:integrity][:path]}/shared/vendor"
     end
 
     execute "bundle_integrity_gems" do
