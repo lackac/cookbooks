@@ -73,6 +73,11 @@ deploy_branch node[:integrity][:path] do
       mode "0644"
     end
 
+    remote_file "#{current_release}/excluding_auth.rb" do
+      source "excluding_auth.rb"
+      mode "0644"
+    end
+
     template "#{current_release}/config.ru" do
       source "config.ru.erb"
       mode "0644"
