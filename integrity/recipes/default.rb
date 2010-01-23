@@ -46,6 +46,15 @@ if node[:integrity][:database_uri] =~ /^sqlite3:(.*)$/
     mode "0664"
   end
   symlink_from_shared[db_path] = db_path
+elsif node[:integrity][:database_uri] =~ /^mysql:\/\/(.*?):(.*?)@localhost\/(.*)$/
+  user, pass, db = $~.captures
+  include_recipe "mysql"
+  database db do
+    provider Chef::Provider::DatabaseMysql
+    user user
+    password pass
+    action :create
+  end
 end
 
 deploy_branch node[:integrity][:path] do
