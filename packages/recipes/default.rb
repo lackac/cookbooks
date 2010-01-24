@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-node[:packages][:packages].each do |pkg, attributes|
+node[:extra_packages].each do |pkg, attributes|
   package(pkg) do
     attributes.each do |k,v|
       send(k, v)

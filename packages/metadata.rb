@@ -18,7 +18,7 @@ attribute "packages/dist_only",
   :description => "Set to only use distribution-provided packages",
   :default => "false"
 
-attribute "packages/packages",
+attribute "extra_packages",
   :display_name => "Extra packages to install/remove",
   :description => "Hash of packages in form of 'package_name' => {attributes}",
   :type => "hash"
