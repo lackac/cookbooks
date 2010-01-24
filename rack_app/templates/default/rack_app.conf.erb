@@ -15,6 +15,7 @@ server {
   location / {
     root <%= @root_dir %>/current/public;
     passenger_enabled on;
+    rack_env <%= environment %>;
 
     if (-f $document_root/system/maintenance.html) {
       rewrite ^(.*)$ /system/maintenance.html break;

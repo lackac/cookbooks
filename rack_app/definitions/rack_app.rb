@@ -112,7 +112,7 @@ define :rack_app, default_params do
     owner "root"
     group "root"
     mode 0644
-    variables :name => name, :root_dir => root_dir,
+    variables :name => name, :root_dir => root_dir, :environment => environment,
               :server_name => server_name, :server_aliases => server_aliases
     if File.exists?("#{node[:nginx][:dir]}/sites-enabled/#{name}.conf")
       notifies :restart, resources(:service => "nginx"), :delayed
