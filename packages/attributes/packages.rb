@@ -2,4 +2,4 @@
 # or gems.
 set_unless[:packages][:dist_only] = false
 
-set_unless[:packages][:packages] = {}
+set_unless[:extra_packages] = {}
