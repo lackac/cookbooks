@@ -29,8 +29,7 @@ default_params = {
   :user               => "www-data",
   :group              => "www-data",
   :migration_command  => "rake db:migrate",
-  :restart_command    => "touch tmp/restart.txt",
-  :action             => "nothing"
+  :restart_command    => "touch tmp/restart.txt"
 }
 
 define :rack_app, default_params do
@@ -89,6 +88,18 @@ define :rack_app, default_params do
       group params[:group]
       mode "0664"
     end
+  end
+
+  # setting defaults for action and migrate based on deploy_mode
+  deploy_mode = (params.delete(:deploy_mode) || :timestamped).to_sym
+  if deploy_mode == :timestamped
+    params[:provider] = Chef::Provider::Deploy::TimstampedDeploy
+    params[:action]   = (params[:action] || :nothing).to_sym
+    params[:migrate]  = !!params[:migrate]
+  else
+    params[:provider] = Chef::Provider::Deploy::DeployRevision
+    params[:action]   = (params[:action] || :deploy).to_sym
+    params[:migrate]  = true if params[:migrate].nil?
   end
 
   deploy root_dir do
