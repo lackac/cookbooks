@@ -93,16 +93,14 @@ define :rack_app, default_params do
   # setting defaults for action and migrate based on deploy_mode
   deploy_mode = (params.delete(:deploy_mode) || :timestamped).to_sym
   if deploy_mode == :timestamped
-    params[:provider] = Chef::Provider::Deploy::TimstampedDeploy
     params[:action]   = (params[:action] || :nothing).to_sym
     params[:migrate]  = !!params[:migrate]
   else
-    params[:provider] = Chef::Provider::Deploy::DeployRevision
     params[:action]   = (params[:action] || :deploy).to_sym
     params[:migrate]  = true if params[:migrate].nil?
   end
 
-  deploy root_dir do
+  send(deploy_mode == :timestamped ? :timestamped_deploy : :deploy_revision, root_dir) do
     params.each do |key, value|
       case key.to_sym
       when :scm_provider
