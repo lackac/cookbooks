@@ -22,7 +22,7 @@
 #
 
 gem_package "bundler" do
-  version "0.8"
+  version "0.8.1"
   action :install
 end
 
