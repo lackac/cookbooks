@@ -65,7 +65,7 @@ deploy_branch node[:integrity][:path] do
   environment   "RACK_ENV" => "production"
 
   migrate           true
-  migration_command "bin/rake db"
+  migration_command "rake db"
 
   purge_before_symlink        %w{log tmp/pids}
   create_dirs_before_symlink  %w{tmp public}
@@ -104,12 +104,8 @@ deploy_branch node[:integrity][:path] do
       end
     end
 
-    link "#{current_release}/vendor" do
-      to "#{node[:integrity][:path]}/shared/vendor"
-    end
-
     execute "bundle_integrity_gems" do
-      command "cd #{current_release} && gem bundle --only default"
+      command "cd #{current_release} && bundle install"
     end
   end
 end
